@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">CineHubApp</string>
+    <string name="cinehub">CineHub</string>
+    <string name="splashScreen_bk_img_description">splash screen background</string>
+    <string name="search">search</string>
+    <string name="filter">filter</string>
+</resources>
