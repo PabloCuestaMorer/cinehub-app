@@ -15,4 +15,10 @@
         android:title="@string/filter"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/action_contact"
+        android:icon="@drawable/ic_contact_page"
+        android:title="Contact"
+        app:showAsAction="always" />
+
 </menu>

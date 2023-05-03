@@ -1,6 +1,7 @@
 package es.usj.pcuestam.cinehubapp.activities
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -81,6 +82,13 @@ class MovieListActivity : AppCompatActivity() {
             showFilterDialog()
             true
         }
+
+        val contactItem = menu.findItem(R.id.action_contact)
+        contactItem.setOnMenuItemClickListener {
+            val intent = Intent(this, ContactActivity::class.java)
+            startActivity(intent)
+            true
+        }
         return true
     }
 
@@ -100,6 +108,5 @@ class MovieListActivity : AppCompatActivity() {
             .setNegativeButton("Cancel", null)
             .show()
     }
-
 
 }

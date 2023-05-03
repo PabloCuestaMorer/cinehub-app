@@ -15,6 +15,7 @@ import java.nio.charset.Charset
 class MovieListViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _movieListLiveData: MutableLiveData<List<Movie>> = MutableLiveData()
+
     // To expose public read-only version of the LiveData
     val movieListLiveData: LiveData<List<Movie>> = _movieListLiveData
 
@@ -29,7 +30,9 @@ class MovieListViewModel(application: Application) : AndroidViewModel(applicatio
                     val movie = Movie.fromJson(jsonObject)
                     movieList.add(movie)
                 }
-                _movieListLiveData.postValue(movieList)
+                withContext(Dispatchers.Main) {
+                    _movieListLiveData.value = movieList
+                }
             } catch (e: JSONException) {
                 e.printStackTrace()
             }
