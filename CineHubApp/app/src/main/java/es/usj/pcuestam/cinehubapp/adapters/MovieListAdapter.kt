@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import es.usj.pcuestam.cinehubapp.R
@@ -13,7 +14,8 @@ import es.usj.pcuestam.cinehubapp.beans.Movie
 class MovieListAdapter(
 
     private var movieList: List<Movie>,
-    private val onMovieClickListener: (Movie) -> Unit
+    private val onMovieClickListener: (Movie) -> Unit,
+    private val onEditButtonClickListener: (Movie) -> Unit
 ) : RecyclerView.Adapter<MovieListAdapter.MovieViewHolder>(), Filterable {
 
     private var movieListFiltered: List<Movie> = movieList
@@ -26,7 +28,7 @@ class MovieListAdapter(
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val movie = movieListFiltered[position]
-        holder.bind(movie, onMovieClickListener)
+        holder.bind(movie, onMovieClickListener, onEditButtonClickListener)
     }
 
     override fun getItemCount(): Int {
@@ -71,9 +73,12 @@ class MovieListAdapter(
     class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val titleTextView: TextView = itemView.findViewById(R.id.movie_title)
 
-        fun bind(movie: Movie, onMovieClickListener: (Movie) -> Unit) {
+        fun bind(movie: Movie, onMovieClickListener: (Movie) -> Unit, onEditButtonClickListener: (Movie) -> Unit) {
             titleTextView.text = movie.title
             itemView.setOnClickListener { onMovieClickListener(movie) }
+
+            val editButton: ImageButton = itemView.findViewById(R.id.edit_button)
+            editButton.setOnClickListener { onEditButtonClickListener(movie) }
         }
     }
 }

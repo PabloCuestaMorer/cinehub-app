@@ -11,10 +11,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
-            android:name=".activities.ContactActivity"
+            android:name=".activities.EditMovieActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.TestMovieList"
+            android:name=".activities.ContactActivity"
             android:exported="false" />
         <activity
             android:name=".activities.MovieListActivity"

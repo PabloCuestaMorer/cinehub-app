@@ -3,6 +3,7 @@ package es.usj.pcuestam.cinehubapp.beans
 import org.json.JSONObject
 
 data class Movie(
+    val id: Int,
     val title: String,
     val description: String,
     val year: Int,
@@ -15,6 +16,7 @@ data class Movie(
 
     companion object {
         fun fromJson(json: JSONObject): Movie {
+            val id = json.getInt("id")
             val title = json.getString("title")
             val description = json.getString("description")
             val year = json.getInt("year")
@@ -27,7 +29,8 @@ data class Movie(
             val directorsJsonArray = json.getJSONArray("directors")
             val directorsList = (0 until directorsJsonArray.length()).map { directorsJsonArray.getString(it) }
 
-            return Movie(title, description, year, rating, poster, genresList, actorsList, directorsList)
+
+            return Movie(id, title, description, year, rating, poster, genresList, actorsList, directorsList)
         }
     }
 }

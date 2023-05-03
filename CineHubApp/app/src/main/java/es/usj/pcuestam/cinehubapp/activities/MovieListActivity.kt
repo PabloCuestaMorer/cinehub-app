@@ -42,10 +42,17 @@ class MovieListActivity : AppCompatActivity() {
 
         // Observe changes to the movie list data and update the adapter accordingly
         movieListViewModel.movieListLiveData.observe(this, Observer { movieList ->
-            movieListAdapter = MovieListAdapter(movieList) { movie ->
-                // Handle movie click
-                Toast.makeText(this, "Clicked: ${movie.title}", Toast.LENGTH_SHORT).show()
-            }
+            movieListAdapter = MovieListAdapter(movieList,
+                { movie -> // Handle movie click
+                    Toast.makeText(this, "Clicked: ${movie.title}", Toast.LENGTH_SHORT).show()
+                },
+                { movie -> // Handle edit button click
+                    val intent = Intent(this, EditMovieActivity::class.java)
+                    intent.putExtra("MOVIE_ID", movie.id)
+                    startActivity(intent)
+                }
+            )
+
 
             movieRecyclerView = findViewById(R.id.movieRecyclerView)
             movieRecyclerView.layoutManager = LinearLayoutManager(this)
