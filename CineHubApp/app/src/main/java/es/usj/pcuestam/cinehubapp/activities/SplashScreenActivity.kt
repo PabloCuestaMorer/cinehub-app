@@ -30,7 +30,7 @@ class SplashScreenActivity : AppCompatActivity() {
             //movieRepository.loadMoviesFromApi() // Replace with your actual loading function
             movieListViewModel.loadMovieList() // Load movie data
             simulateLoadingData()
-            navigateToMovieListActivity()
+            //navigateToMovieListActivity()
         }
     }
 
