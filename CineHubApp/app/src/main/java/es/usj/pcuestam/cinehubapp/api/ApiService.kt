@@ -10,7 +10,7 @@ import retrofit2.http.Path
 interface ApiService {
     // API endpoints
     @GET("/movies")
-    suspend fun getMovies(): Response<List<Movie>>
+    suspend fun getAllMovies(): Response<List<Movie>>
 
     // Fetch a single movie by its ID
     @GET("/movies/{id}")

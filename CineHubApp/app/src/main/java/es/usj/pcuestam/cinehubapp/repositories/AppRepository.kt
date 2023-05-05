@@ -19,7 +19,7 @@ class AppRepository {
     }
 
     suspend fun getAllMovies(): List<Movie>? {
-        val response = apiService.getMovies()
+        val response = apiService.getAllMovies()
         return if (response.isSuccessful) {
             response.body()
         } else {
