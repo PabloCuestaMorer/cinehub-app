@@ -9,7 +9,16 @@ class AppRepository {
 
     private val apiService = ApiClient.instance
 
-    suspend fun getMovies(): List<Movie>? {
+    suspend fun getMovieById(movieId: Int): Movie? {
+        val response = apiService.getMovieById(movieId)
+        return if (response.isSuccessful) {
+            response.body()
+        } else {
+            null
+        }
+    }
+
+    suspend fun getAllMovies(): List<Movie>? {
         val response = apiService.getMovies()
         return if (response.isSuccessful) {
             response.body()
@@ -17,23 +26,22 @@ class AppRepository {
             null
         }
     }
-    /*
-        suspend fun getActors(): List<Actor>? {
-            val response = apiService.getActors()
-            return if (response.isSuccessful) {
-                response.body()
-            } else {
-                null
-            }
-        }
 
-        suspend fun getGenres(): List<Genre>? {
-            val response = apiService.getGenres()
-            return if (response.isSuccessful) {
-                response.body()
-            } else {
-                null
-            }
+    suspend fun getAllActors(): List<Actor>? {
+        val response = apiService.getAllActors()
+        return if (response.isSuccessful) {
+            response.body()
+        } else {
+            null
         }
-        */
+    }
+
+    suspend fun getAllGenres(): List<Genre>? {
+        val response = apiService.getAllGenres()
+        return if (response.isSuccessful) {
+            response.body()
+        } else {
+            null
+        }
+    }
 }
