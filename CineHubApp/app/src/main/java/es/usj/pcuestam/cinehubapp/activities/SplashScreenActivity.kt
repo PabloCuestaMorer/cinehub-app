@@ -10,33 +10,24 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class SplashScreenActivity : AppCompatActivity() {
-    // private val movieRepository = MovieRepository()
     private lateinit var movieListViewModel: MovieListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
 
-        movieListViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(application).create(MovieListViewModel::class.java)
+        movieListViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+            .create(MovieListViewModel::class.java)
 
         loadDataAndNavigate()
     }
 
     private fun loadDataAndNavigate() {
-        CoroutineScope(Dispatchers.IO).launch {
-            //movieRepository.loadMoviesFromApi() // Replace with your actual loading function
-            movieListViewModel.loadMovieList() // Load movie data
-            simulateLoadingData()
-            //navigateToMovieListActivity()
-        }
-    }
-
-    private suspend fun simulateLoadingData() {
-        delay(2000) // 2 seconds delay to simulate data loading
-        withContext(Dispatchers.Main) {
+        CoroutineScope(Dispatchers.Main).launch {
+            movieListViewModel.loadMovieList()
+            delay(2000) // 2 seconds delay to simulate data loading
             navigateToMovieListActivity()
         }
     }

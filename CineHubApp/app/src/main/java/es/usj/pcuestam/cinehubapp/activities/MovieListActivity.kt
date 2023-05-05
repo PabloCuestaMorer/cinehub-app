@@ -53,10 +53,20 @@ class MovieListActivity : AppCompatActivity() {
                 }
             )
 
-
             movieRecyclerView = findViewById(R.id.movieRecyclerView)
             movieRecyclerView.layoutManager = LinearLayoutManager(this)
             movieRecyclerView.adapter = movieListAdapter
+
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    movieListAdapter.filter.filter(newText)
+                    return true
+                }
+            })
         })
 
         setupToolbar()
@@ -73,16 +83,6 @@ class MovieListActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.menu_movie_list, menu)
         val searchItem = menu.findItem(R.id.action_search)
         searchView = searchItem.actionView as SearchView
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                movieListAdapter.filter.filter(newText)
-                return true
-            }
-        })
 
         val filterItem = menu.findItem(R.id.action_filter)
         filterItem.setOnMenuItemClickListener {
