@@ -5,7 +5,7 @@ data class Movie(
     val title: String,
     val description: String,
     val year: Int,
-    val length: Int,
+    val runtime: Int,
     val rating: Float,
     val votes: Int,
     val revenue: Float,

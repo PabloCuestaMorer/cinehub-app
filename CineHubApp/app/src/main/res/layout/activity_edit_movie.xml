@@ -8,11 +8,18 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/id_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            tools:text="Movie Id" />
+
         <EditText
-            android:id="@+id/movie_title_edit_text"
+            android:id="@+id/title_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Title"
@@ -20,15 +27,16 @@
             tools:text="Movie Title" />
 
         <EditText
-            android:id="@+id/movie_description_edit_text"
+            android:id="@+id/description_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Description"
+            android:inputType="textMultiLine"
             android:minHeight="48dp"
             tools:text="Movie Description" />
 
         <EditText
-            android:id="@+id/movie_release_year_edit_text"
+            android:id="@+id/release_year_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Release Year"
@@ -37,16 +45,16 @@
             tools:text="2022" />
 
         <EditText
-            android:id="@+id/movie_length_edit_text"
+            android:id="@+id/runtime_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Length (minutes)"
+            android:hint="Runtime (minutes)"
             android:inputType="number"
             android:minHeight="48dp"
             tools:text="120" />
 
         <EditText
-            android:id="@+id/movie_rating_edit_text"
+            android:id="@+id/rating_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Rating"
@@ -55,7 +63,7 @@
             tools:text="8.5" />
 
         <EditText
-            android:id="@+id/movie_votes_edit_text"
+            android:id="@+id/votes_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Votes"
@@ -64,7 +72,7 @@
             tools:text="1000" />
 
         <EditText
-            android:id="@+id/movie_revenue_edit_text"
+            android:id="@+id/revenue_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Revenue"

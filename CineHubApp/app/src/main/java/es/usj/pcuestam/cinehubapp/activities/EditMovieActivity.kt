@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import es.usj.pcuestam.cinehubapp.R
 import es.usj.pcuestam.cinehubapp.beans.Actor
@@ -18,13 +18,14 @@ class EditMovieActivity : AppCompatActivity() {
     private var movieId: Int = 0
     private lateinit var movieListViewModel: MovieListViewModel
 
-    private lateinit var movieTitleEditText: EditText
-    private lateinit var movieDescriptionEditText: EditText
-    private lateinit var movieYearEditText: EditText
-    private lateinit var movieLengthEditText: EditText
-    private lateinit var movieRatingEditText: EditText
-    private lateinit var movieVotesEditText: EditText
-    private lateinit var movieRevenueEditText: EditText
+    private lateinit var idEt: TextView
+    private lateinit var titleEt: EditText
+    private lateinit var descriptionEt: EditText
+    private lateinit var yearEt: EditText
+    private lateinit var runtimeEt: EditText
+    private lateinit var ratingEt: EditText
+    private lateinit var votesEt: EditText
+    private lateinit var revenueEt: EditText
     private lateinit var movieDirectorEditText: EditText
     private lateinit var genreSpinner: Spinner
     private lateinit var actorSpinner: Spinner
@@ -35,13 +36,14 @@ class EditMovieActivity : AppCompatActivity() {
 
         movieListViewModel = ViewModelProvider(this)[MovieListViewModel::class.java]
 
-        movieTitleEditText = findViewById(R.id.movie_title_edit_text)
-        movieDescriptionEditText = findViewById(R.id.movie_description_edit_text)
-        movieYearEditText = findViewById(R.id.movie_release_year_edit_text)
-        movieLengthEditText = findViewById(R.id.movie_length_edit_text)
-        movieRatingEditText = findViewById(R.id.movie_rating_edit_text)
-        movieVotesEditText = findViewById(R.id.movie_votes_edit_text)
-        movieRevenueEditText = findViewById(R.id.movie_revenue_edit_text)
+        idEt = findViewById(R.id.id_et)
+        titleEt = findViewById(R.id.title_et)
+        descriptionEt = findViewById(R.id.description_et)
+        yearEt = findViewById(R.id.release_year_et)
+        runtimeEt = findViewById(R.id.runtime_et)
+        ratingEt = findViewById(R.id.rating_et)
+        votesEt = findViewById(R.id.votes_et)
+        revenueEt = findViewById(R.id.revenue_et)
         movieDirectorEditText = findViewById(R.id.movie_director_edit_text)
         genreSpinner = findViewById(R.id.movie_genres_spinner)
         actorSpinner = findViewById(R.id.movie_actors_spinner)
@@ -58,7 +60,6 @@ class EditMovieActivity : AppCompatActivity() {
                     finish()
                 }
             }
-
             movieListViewModel.loadGenresAndActors()
             movieListViewModel.genreListLiveData.observe(this) { genres ->
                 if (genres != null) {
@@ -78,13 +79,14 @@ class EditMovieActivity : AppCompatActivity() {
     }
 
     private fun populateFormWithMovieDetails(movie: Movie) {
-        movieTitleEditText.setText(movie.title)
-        movieDescriptionEditText.setText(movie.description)
-        movieYearEditText.setText(movie.year.toString())
-        movieLengthEditText.setText(movie.length.toString())
-        movieRatingEditText.setText(movie.rating.toString())
-        movieVotesEditText.setText(movie.votes.toString())
-        movieRevenueEditText.setText(movie.revenue.toString())
+        idEt.setText(movie.id.toString())
+        titleEt.setText(movie.title)
+        descriptionEt.setText(movie.description)
+        yearEt.setText(movie.year.toString())
+        runtimeEt.setText(movie.runtime.toString())
+        ratingEt.setText(movie.rating.toString())
+        votesEt.setText(movie.votes.toString())
+        revenueEt.setText(movie.revenue.toString())
         movieDirectorEditText.setText(movie.director)
     }
 
