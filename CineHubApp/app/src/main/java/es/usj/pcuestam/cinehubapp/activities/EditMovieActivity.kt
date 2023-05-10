@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
@@ -27,8 +28,6 @@ class EditMovieActivity : AppCompatActivity() {
     private lateinit var votesEt: EditText
     private lateinit var revenueEt: EditText
     private lateinit var movieDirectorEditText: EditText
-    private lateinit var genreSpinner: Spinner
-    private lateinit var actorSpinner: Spinner
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +44,6 @@ class EditMovieActivity : AppCompatActivity() {
         votesEt = findViewById(R.id.votes_et)
         revenueEt = findViewById(R.id.revenue_et)
         movieDirectorEditText = findViewById(R.id.movie_director_edit_text)
-        genreSpinner = findViewById(R.id.movie_genres_spinner)
-        actorSpinner = findViewById(R.id.movie_actors_spinner)
 
         movieId = intent.getIntExtra("MOVIE_ID", 0)
         if (0 < movieId) {
@@ -63,15 +60,24 @@ class EditMovieActivity : AppCompatActivity() {
             movieListViewModel.loadGenresAndActors()
             movieListViewModel.genreListLiveData.observe(this) { genres ->
                 if (genres != null) {
-                    setUpGenreSpinner(genres)
+                    movieListViewModel.movieLiveData.observe(this) { movie ->
+                        if (movie != null) {
+                            setUpGenreSpinner(genres, movie.genres)
+                        }
+                    }
                 }
             }
 
             movieListViewModel.actorListLiveData.observe(this) { actors ->
                 if (actors != null) {
-                    setUpActorSpinner(actors)
+                    movieListViewModel.movieLiveData.observe(this) { movie ->
+                        if (movie != null) {
+                            setUpActorSpinner(actors, movie.actors)
+                        }
+                    }
                 }
             }
+
         } else {
             Toast.makeText(this, "Error: Movie ID not found.", Toast.LENGTH_LONG).show()
             finish()
@@ -79,7 +85,7 @@ class EditMovieActivity : AppCompatActivity() {
     }
 
     private fun populateFormWithMovieDetails(movie: Movie) {
-        idEt.setText(movie.id.toString())
+        idEt.text = movie.id.toString()
         titleEt.setText(movie.title)
         descriptionEt.setText(movie.description)
         yearEt.setText(movie.year.toString())
@@ -90,23 +96,75 @@ class EditMovieActivity : AppCompatActivity() {
         movieDirectorEditText.setText(movie.director)
     }
 
-    private fun setUpGenreSpinner(genres: List<Genre>) {
+    private fun setUpGenreSpinner(genres: List<Genre>, movieGenresIds: List<Int>) {
         val genreAdapter = ArrayAdapter(
             this,
             android.R.layout.simple_spinner_item,
             genres.map { it.name }
         )
         genreAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        genreSpinner.adapter = genreAdapter
+
+        val genreSpinnersContainer = findViewById<LinearLayout>(R.id.genre_spinners_container)
+        genreSpinnersContainer.removeAllViews()
+
+        movieGenresIds.forEach { movieGenreId ->
+            val spinner = createGenreSpinner()
+            spinner.adapter = genreAdapter
+
+            val actorPosition = genres.indexOfFirst { it.id == movieGenreId }
+            if (actorPosition != -1) {
+                spinner.setSelection(actorPosition)
+            }
+
+            genreSpinnersContainer.addView(spinner)
+        }
     }
 
-    private fun setUpActorSpinner(actors: List<Actor>) {
+    private fun createGenreSpinner(): Spinner {
+        val spinner = Spinner(this)
+        val layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        layoutParams.setMargins(0, 8, 0, 8)
+        spinner.layoutParams = layoutParams
+        return spinner
+    }
+
+    private fun setUpActorSpinner(actors: List<Actor>, movieActorIds: List<Int>) {
         val actorAdapter = ArrayAdapter(
             this,
             android.R.layout.simple_spinner_item,
             actors.map { it.name }
         )
         actorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        actorSpinner.adapter = actorAdapter
+
+        val actorSpinnersContainer = findViewById<LinearLayout>(R.id.actor_spinners_container)
+        actorSpinnersContainer.removeAllViews()
+
+        movieActorIds.forEach { movieActorId ->
+            val spinner = createActorSpinner()
+            spinner.adapter = actorAdapter
+
+            val actorPosition = actors.indexOfFirst { it.id == movieActorId }
+            if (actorPosition != -1) {
+                spinner.setSelection(actorPosition)
+            }
+
+            actorSpinnersContainer.addView(spinner)
+        }
     }
+
+
+    private fun createActorSpinner(): Spinner {
+        val spinner = Spinner(this)
+        val layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        layoutParams.setMargins(0, 8, 0, 8)
+        spinner.layoutParams = layoutParams
+        return spinner
+    }
+
 }

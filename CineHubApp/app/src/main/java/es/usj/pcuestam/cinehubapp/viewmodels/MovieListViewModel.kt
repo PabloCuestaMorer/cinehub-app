@@ -27,17 +27,20 @@ class MovieListViewModel(application: Application) : AndroidViewModel(applicatio
     private val _actorListLiveData: MutableLiveData<List<Actor>> = MutableLiveData()
     val actorListLiveData: LiveData<List<Actor>> = _actorListLiveData
 
-    fun loadMovieList() {
+    fun loadMovieList() : Boolean {
+        var dataLoaded = false
         CoroutineScope(Dispatchers.IO).launch {
             val movieList = appRepository.getAllMovies()
             if (movieList != null) {
                 withContext(Dispatchers.Main) {
                     _movieListLiveData.value = movieList
+                    dataLoaded = true
                 }
             } else {
                 // Handle error or show a message to the user
             }
         }
+        return dataLoaded
     }
 
     // Fetch movie, genres, and actors:
