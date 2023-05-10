@@ -4,17 +4,20 @@ import es.usj.pcuestam.cinehubapp.beans.Actor
 import es.usj.pcuestam.cinehubapp.beans.Genre
 import es.usj.pcuestam.cinehubapp.beans.Movie
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface ApiService {
-    // API endpoints
     @GET("/movies")
     suspend fun getAllMovies(): Response<List<Movie>>
 
-    // Fetch a single movie by its ID
     @GET("/movies/{id}")
     suspend fun getMovieById(@Path("id") movieId: Int): Response<Movie>
+
+    @POST("/movies")
+    suspend fun addMovie(@Body movie: Movie): Response<Movie>
 
     @GET("/actors")
     suspend fun getAllActors(): Response<List<Actor>>

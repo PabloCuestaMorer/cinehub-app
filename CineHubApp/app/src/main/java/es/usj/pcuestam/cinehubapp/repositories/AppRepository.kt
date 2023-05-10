@@ -6,8 +6,15 @@ import es.usj.pcuestam.cinehubapp.beans.Genre
 import es.usj.pcuestam.cinehubapp.beans.Movie
 
 class AppRepository {
-
     private val apiService = ApiClient.instance
+    suspend fun getAllMovies(): List<Movie>? {
+        val response = apiService.getAllMovies()
+        return if (response.isSuccessful) {
+            response.body()
+        } else {
+            null
+        }
+    }
 
     suspend fun getMovieById(movieId: Int): Movie? {
         val response = apiService.getMovieById(movieId)
@@ -18,14 +25,15 @@ class AppRepository {
         }
     }
 
-    suspend fun getAllMovies(): List<Movie>? {
-        val response = apiService.getAllMovies()
+    suspend fun addMovie(movie: Movie): Movie? {
+        val response = apiService.addMovie(movie)
         return if (response.isSuccessful) {
             response.body()
         } else {
             null
         }
     }
+
 
     suspend fun getAllActors(): List<Actor>? {
         val response = apiService.getAllActors()
