@@ -24,12 +24,14 @@ import es.usj.pcuestam.cinehubapp.repositories.AppRepository
 class AddMovieActivity : AppCompatActivity() {
 
     private lateinit var movieListViewModel: MovieListViewModel
-    private lateinit var genreSpinnerAdapter: ArrayAdapter<Genre>
-    private lateinit var actorSpinnerAdapter: ArrayAdapter<Actor>
     private lateinit var addActorButton: Button
-    private lateinit var addGenreButton: Button
+    private lateinit var removeActorButton: Button
     private lateinit var genreSpinnersContainer: LinearLayout
+    private lateinit var genreSpinnerAdapter: ArrayAdapter<Genre>
+    private lateinit var addGenreButton: Button
+    private lateinit var removeGenreButton: Button
     private lateinit var actorSpinnersContainer: LinearLayout
+    private lateinit var actorSpinnerAdapter: ArrayAdapter<Actor>
     private val appRepository = AppRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +51,9 @@ class AddMovieActivity : AppCompatActivity() {
 
     private fun initViews() {
         addActorButton = findViewById(R.id.add_actor_button)
+        removeActorButton = findViewById(R.id.remove_actor_button)
         addGenreButton = findViewById(R.id.add_genre_button)
+        removeGenreButton = findViewById(R.id.remove_genre_button)
         genreSpinnersContainer = findViewById(R.id.genre_spinners_container)
         actorSpinnersContainer = findViewById(R.id.actor_spinners_container)
     }
@@ -68,11 +72,22 @@ class AddMovieActivity : AppCompatActivity() {
         }
     }
 
+    private fun setUpGenreSpinnerAdapter(genres: List<Genre>) {
+        genreSpinnerAdapter = GenreArrayAdapter(this, genres)
+    }
+
+    private fun setUpActorSpinnerAdapter(actors: List<Actor>) {
+        actorSpinnerAdapter = ActorArrayAdapter(this, actors)
+    }
+
     private fun setupButtonClickListeners() {
         addActorButton.setOnClickListener {
             val spinner = createSpinner()
             spinner.adapter = actorSpinnerAdapter
             actorSpinnersContainer.addView(spinner)
+        }
+        removeActorButton.setOnClickListener {
+            removeLastSpinner(actorSpinnersContainer)
         }
 
         addGenreButton.setOnClickListener {
@@ -80,11 +95,46 @@ class AddMovieActivity : AppCompatActivity() {
             spinner.adapter = genreSpinnerAdapter
             genreSpinnersContainer.addView(spinner)
         }
+        removeGenreButton.setOnClickListener {
+            removeLastSpinner(genreSpinnersContainer)
+        }
 
         val saveButton = findViewById<Button>(R.id.save_button)
         saveButton.setOnClickListener {
             val newMovie = createNewMovieFromInputs()
             addNewMovie(newMovie)
+        }
+    }
+
+    private fun createSpinner(): Spinner {
+        return Spinner(this).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+        }
+    }
+
+    private fun removeLastSpinner(container: LinearLayout) {
+        if (container.childCount > 0) {
+            container.removeViewAt(container.childCount - 1)
+        }
+    }
+
+    private fun addNewMovie(newMovie: Movie) {
+        lifecycleScope.launch {
+            val addedMovie = appRepository.addMovie(newMovie)
+            if (addedMovie != null) {
+                Toast.makeText(
+                    this@AddMovieActivity,
+                    "Movie added successfully",
+                    Toast.LENGTH_SHORT
+                ).show()
+                finish()
+            } else {
+                Toast.makeText(this@AddMovieActivity, "Failed to add movie", Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
     }
 
@@ -118,41 +168,6 @@ class AddMovieActivity : AppCompatActivity() {
         )
     }
 
-    private fun addNewMovie(newMovie: Movie) {
-        lifecycleScope.launch {
-            val addedMovie = appRepository.addMovie(newMovie)
-            if (addedMovie != null) {
-                Toast.makeText(
-                    this@AddMovieActivity,
-                    "Movie added successfully",
-                    Toast.LENGTH_SHORT
-                ).show()
-                finish()
-            } else {
-                Toast.makeText(this@AddMovieActivity, "Failed to add movie", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        }
-    }
-
-
-    private fun setUpGenreSpinnerAdapter(genres: List<Genre>) {
-        genreSpinnerAdapter = GenreArrayAdapter(this, genres)
-    }
-
-    private fun setUpActorSpinnerAdapter(actors: List<Actor>) {
-        actorSpinnerAdapter = ActorArrayAdapter(this, actors)
-    }
-
-
-    private fun createSpinner(): Spinner {
-        return Spinner(this).apply {
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-        }
-    }
 
     private fun getSelectedActorIds(): List<Int> {
         return actorSpinnersContainer.children.map { view ->
