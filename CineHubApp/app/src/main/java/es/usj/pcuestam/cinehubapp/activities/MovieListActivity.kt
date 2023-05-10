@@ -20,6 +20,7 @@ import es.usj.pcuestam.cinehubapp.adapters.MovieListAdapter
 import es.usj.pcuestam.cinehubapp.viewmodels.MovieListViewModel
 import kotlinx.coroutines.launch
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class MovieListActivity : AppCompatActivity() {
@@ -35,7 +36,8 @@ class MovieListActivity : AppCompatActivity() {
 
         movieListViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
             .create(MovieListViewModel::class.java)
-        // Use lifecycleScope to call the suspend function
+
+        // Load the movies in a Coroutine
         lifecycleScope.launch {
             movieListViewModel.loadMovieList()
         }
@@ -67,7 +69,17 @@ class MovieListActivity : AppCompatActivity() {
                     return true
                 }
             })
+
+
+
         })
+
+        // Add movie floating action button
+        val addMovieFab = findViewById<FloatingActionButton>(R.id.add_movie_fab)
+        addMovieFab.setOnClickListener {
+            val intent = Intent(this, AddMovieActivity::class.java)
+            startActivity(intent)
+        }
 
         setupToolbar()
     }

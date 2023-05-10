@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".activities.AddMovieActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/title_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Title"
+            android:minHeight="48dp"
+            tools:text="Movie Title" />
+
+        <EditText
+            android:id="@+id/description_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Description"
+            android:inputType="textMultiLine"
+            android:minHeight="48dp"
+            tools:text="Movie Description" />
+
+        <EditText
+            android:id="@+id/release_year_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Release Year"
+            android:inputType="number"
+            android:minHeight="48dp"
+            tools:text="2022" />
+
+        <EditText
+            android:id="@+id/runtime_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Runtime (minutes)"
+            android:inputType="number"
+            android:minHeight="48dp"
+            tools:text="120" />
+
+        <EditText
+            android:id="@+id/rating_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Rating"
+            android:inputType="numberDecimal"
+            android:minHeight="48dp"
+            tools:text="8.5" />
+
+        <EditText
+            android:id="@+id/votes_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Votes"
+            android:inputType="number"
+            android:minHeight="48dp"
+            tools:text="1000" />
+
+        <EditText
+            android:id="@+id/revenue_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Revenue"
+            android:inputType="numberDecimal"
+            android:minHeight="48dp"
+            tools:text="1000000" />
+
+        <EditText
+            android:id="@+id/movie_director_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Director"
+            android:minHeight="48dp"
+            tools:text="Director Name" />
+
+        <TextView
+            android:id="@+id/tvGenres"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Genres" />
+
+        <Button
+            android:id="@+id/add_genre_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+" />
+
+        <LinearLayout
+            android:id="@+id/genre_spinners_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <TextView
+            android:id="@+id/tvActors"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Actors" />
+
+        <Button
+            android:id="@+id/add_actor_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+" />
+
+        <LinearLayout
+            android:id="@+id/actor_spinners_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <Button
+            android:id="@+id/save_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="Save" />
+
+    </LinearLayout>
+
+</ScrollView>

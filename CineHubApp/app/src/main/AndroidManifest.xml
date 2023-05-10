@@ -14,7 +14,9 @@
         android:roundIcon="@mipmap/ic_cine_hub_simple_logo_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
+        <activity
+            android:name=".activities.AddMovieActivity"
+            android:exported="false" />
         <activity
             android:name=".activities.EditMovieActivity"
             android:exported="false" />
