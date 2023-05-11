@@ -145,10 +145,10 @@ class AddMovieActivity : AppCompatActivity() {
             findViewById<EditText>(R.id.release_year_et).text.toString().toIntOrNull() ?: 0
         val runtime = findViewById<EditText>(R.id.runtime_et).text.toString().toIntOrNull() ?: 0
         val rating =
-            findViewById<EditText>(R.id.rating_et).text.toString().toFloatOrNull() ?: 0f
+            findViewById<EditText>(R.id.rating_et).text.toString().toDoubleOrNull() ?: 0f
         val votes = findViewById<EditText>(R.id.votes_et).text.toString().toIntOrNull() ?: 0
         val revenue =
-            findViewById<EditText>(R.id.revenue_et).text.toString().toFloatOrNull() ?: 0f
+            findViewById<EditText>(R.id.revenue_et).text.toString().toDoubleOrNull() ?: 0f
         val director = findViewById<EditText>(R.id.movie_director_edit_text).text.toString()
         val actors = getSelectedActorIds()
         val genres = getSelectedGenreIds()
@@ -159,9 +159,9 @@ class AddMovieActivity : AppCompatActivity() {
             description,
             year,
             runtime,
-            rating,
+            rating as Double,
             votes,
-            revenue,
+            revenue as Double,
             director,
             actors,
             genres

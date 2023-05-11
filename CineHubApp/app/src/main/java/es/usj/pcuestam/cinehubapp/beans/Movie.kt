@@ -6,9 +6,9 @@ data class Movie(
     val description: String,
     val year: Int,
     val runtime: Int,
-    val rating: Float,
+    val rating: Double,
     val votes: Int,
-    val revenue: Float,
+    val revenue: Double,
     val director: String,
     val genres: List<Int>,
     val actors: List<Int>
