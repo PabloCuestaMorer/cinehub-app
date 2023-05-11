@@ -6,12 +6,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +19,7 @@ import es.usj.pcuestam.cinehubapp.viewmodels.MovieListViewModel
 import kotlinx.coroutines.launch
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import es.usj.pcuestam.cinehubapp.beans.Movie
 
 
 class MovieListActivity : AppCompatActivity() {
@@ -37,27 +36,22 @@ class MovieListActivity : AppCompatActivity() {
         movieListViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
             .create(MovieListViewModel::class.java)
 
+        initViewModelObservers()
+
         // Load the movies in a Coroutine
         lifecycleScope.launch {
             movieListViewModel.loadMovieList()
         }
 
-        // Observe changes to the movie list data and update the adapter accordingly
-        movieListViewModel.movieListLiveData.observe(this, Observer { movieList ->
-            movieListAdapter = MovieListAdapter(movieList,
-                { movie -> // Handle movie click
-                    Toast.makeText(this, "Clicked: ${movie.title}", Toast.LENGTH_SHORT).show()
-                },
-                { movie -> // Handle edit button click
-                    val intent = Intent(this, EditMovieActivity::class.java)
-                    intent.putExtra("MOVIE_ID", movie.id)
-                    startActivity(intent)
-                }
-            )
+        setupAddMovieFab()
+        setupToolbar()
+    }
 
-            movieRecyclerView = findViewById(R.id.movieRecyclerView)
-            movieRecyclerView.layoutManager = LinearLayoutManager(this)
-            movieRecyclerView.adapter = movieListAdapter
+    private fun initViewModelObservers() {
+        // Observe changes to the movie list data and update the adapter accordingly
+        movieListViewModel.movieListLiveData.observe(this) { movieList ->
+            setupMovieListAdapter(movieList)
+            setupMovieRecyclerView()
 
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
@@ -69,19 +63,38 @@ class MovieListActivity : AppCompatActivity() {
                     return true
                 }
             })
+        }
+    }
 
 
+    private fun setupMovieListAdapter(movieList: List<Movie>) {
+        movieListAdapter = MovieListAdapter(movieList,
+            { movie -> // Handle movie click
+                val intent = Intent(this, ViewMovieActivity::class.java)
+                intent.putExtra("MOVIE_ID", movie.id)
+                startActivity(intent)
+            },
+            { movie -> // Handle edit button click
+                val intent = Intent(this, EditMovieActivity::class.java)
+                intent.putExtra("MOVIE_ID", movie.id)
+                startActivity(intent)
+            }
+        )
+    }
 
-        })
-
+    private fun setupAddMovieFab() {
         // Add movie floating action button
         val addMovieFab = findViewById<FloatingActionButton>(R.id.add_movie_fab)
         addMovieFab.setOnClickListener {
             val intent = Intent(this, AddMovieActivity::class.java)
             startActivity(intent)
         }
+    }
 
-        setupToolbar()
+    private fun setupMovieRecyclerView() {
+        movieRecyclerView = findViewById(R.id.movieRecyclerView)
+        movieRecyclerView.layoutManager = LinearLayoutManager(this)
+        movieRecyclerView.adapter = movieListAdapter
     }
 
     private fun setupToolbar() {

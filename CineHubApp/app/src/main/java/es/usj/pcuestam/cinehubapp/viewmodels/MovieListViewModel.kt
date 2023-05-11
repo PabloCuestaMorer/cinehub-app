@@ -27,7 +27,7 @@ class MovieListViewModel(application: Application) : AndroidViewModel(applicatio
     private val _actorListLiveData: MutableLiveData<List<Actor>> = MutableLiveData()
     val actorListLiveData: LiveData<List<Actor>> = _actorListLiveData
 
-    fun loadMovieList() : Boolean {
+    fun loadMovieList(): Boolean {
         var dataLoaded = false
         CoroutineScope(Dispatchers.IO).launch {
             val movieList = appRepository.getAllMovies()
@@ -39,6 +39,7 @@ class MovieListViewModel(application: Application) : AndroidViewModel(applicatio
             } else {
                 // Handle error or show a message to the user
             }
+            loadGenresAndActors()
         }
         return dataLoaded
     }
@@ -72,4 +73,14 @@ class MovieListViewModel(application: Application) : AndroidViewModel(applicatio
             }
         }
     }
+
+    fun getGenreById(genreId: Int): Genre? {
+        return genreListLiveData.value?.find { it.id == genreId }
+    }
+
+    fun getActorById(actorId: Int): Actor? {
+        return actorListLiveData.value?.find { it.id == actorId }
+    }
+
+
 }

@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
+            android:name=".activities.ViewMovieActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.AddMovieActivity"
             android:exported="false" />
         <activity
