@@ -1,5 +1,6 @@
 package es.usj.pcuestam.cinehubapp.activities
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -79,7 +80,8 @@ class ViewMovieActivity : AppCompatActivity() {
             ?.filter { it.id in movieListViewModel.movieLiveData.value?.genres.orEmpty() }
             ?: emptyList()
         binding.genresRecyclerView.apply {
-            layoutManager = LinearLayoutManager(this@ViewMovieActivity, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager =
+                LinearLayoutManager(this@ViewMovieActivity, LinearLayoutManager.HORIZONTAL, false)
             adapter = GenreAdapter(movieGenres) {
                 // Handle genre click here
             }
@@ -91,9 +93,13 @@ class ViewMovieActivity : AppCompatActivity() {
             ?.filter { it.id in movieListViewModel.movieLiveData.value?.actors.orEmpty() }
             ?: emptyList()
         binding.actorsRecyclerView.apply {
-            layoutManager = LinearLayoutManager(this@ViewMovieActivity, LinearLayoutManager.HORIZONTAL, false)
-            adapter = ActorAdapter(movieActors) {
-                // Handle actor click here
+            layoutManager =
+                LinearLayoutManager(this@ViewMovieActivity, LinearLayoutManager.HORIZONTAL, false)
+            adapter = ActorAdapter(movieActors) { actor ->
+                // Start ActorActivity when an actor is clicked
+                val intent = Intent(this@ViewMovieActivity, ActorActivity::class.java)
+                intent.putExtra("ACTOR_ID", actor.id)
+                startActivity(intent)
             }
         }
     }

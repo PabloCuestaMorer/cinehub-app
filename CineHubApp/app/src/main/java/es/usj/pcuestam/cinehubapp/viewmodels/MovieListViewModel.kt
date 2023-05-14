@@ -73,13 +73,24 @@ class MovieListViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
-    fun getGenreById(genreId: Int): Genre? {
-        return genreListLiveData.value?.find { it.id == genreId }
+    private val _moviesWithActorLiveData: MutableLiveData<List<Movie>> = MutableLiveData()
+    val moviesWithActorLiveData: LiveData<List<Movie>> = _moviesWithActorLiveData
+
+    fun fetchMoviesWithActor(actorId: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val allMovies = appRepository.getAllMovies()
+            val moviesWithActor = allMovies?.filter { movie -> movie.actors.contains(actorId) }
+
+            if (moviesWithActor != null) {
+                withContext(Dispatchers.Main) {
+                    _moviesWithActorLiveData.value = moviesWithActor
+                }
+            } else {
+                // Handle error or show a message to the user
+            }
+        }
     }
 
-    fun getActorById(actorId: Int): Actor? {
-        return actorListLiveData.value?.find { it.id == actorId }
-    }
 
 
 }
