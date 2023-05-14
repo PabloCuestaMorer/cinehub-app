@@ -96,6 +96,13 @@
             android:textSize="18sp"
             tools:text="Movie Director" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Genres"
+            android:textSize="18sp" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/genresRecyclerView"
             android:layout_width="match_parent"

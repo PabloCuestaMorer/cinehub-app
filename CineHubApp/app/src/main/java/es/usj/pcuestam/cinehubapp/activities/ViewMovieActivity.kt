@@ -1,23 +1,24 @@
 package es.usj.pcuestam.cinehubapp.activities
 
 import android.os.Bundle
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import es.usj.pcuestam.cinehubapp.R
 import es.usj.pcuestam.cinehubapp.adapters.ActorAdapter
 import es.usj.pcuestam.cinehubapp.adapters.GenreAdapter
 import es.usj.pcuestam.cinehubapp.beans.Movie
+import es.usj.pcuestam.cinehubapp.databinding.ActivityViewMovieBinding
 import es.usj.pcuestam.cinehubapp.viewmodels.MovieListViewModel
 
 class ViewMovieActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityViewMovieBinding
     private lateinit var movieListViewModel: MovieListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_view_movie)
+        binding = ActivityViewMovieBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         initViewModel()
         fetchMovieDetails()
@@ -25,8 +26,7 @@ class ViewMovieActivity : AppCompatActivity() {
     }
 
     private fun initViewModel() {
-        movieListViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-            .create(MovieListViewModel::class.java)
+        movieListViewModel = ViewModelProvider(this)[MovieListViewModel::class.java]
     }
 
     private fun fetchMovieDetails() {
@@ -38,46 +38,63 @@ class ViewMovieActivity : AppCompatActivity() {
 
     private fun observeMovieLiveData() {
         movieListViewModel.movieLiveData.observe(this) { movie ->
-            movie?.let { displayMovieDetails(it) }
+            movie?.let {
+                displayMovieDetails(it)
+                movieListViewModel.loadGenresAndActors()
+                observeGenresAndActorsLiveData()
+            }
+        }
+    }
+
+    private fun observeGenresAndActorsLiveData() {
+        movieListViewModel.genreListLiveData.observe(this) { genres ->
+            genres?.let {
+                setupGenresRecyclerView()
+            }
+        }
+        movieListViewModel.actorListLiveData.observe(this) { actors ->
+            actors?.let {
+                setupActorsRecyclerView()
+            }
         }
     }
 
     private fun displayMovieDetails(movie: Movie) {
-        setMovieInfo(movie)
-        setupGenresRecyclerView(movie)
-        setupActorsRecyclerView(movie)
+        with(binding) {
+            movieTitle.text = movie.title
+            movieDescription.text = movie.description
+            movieYear.text = movie.year.toString()
+            movieRuntime.text = getString(R.string.movie_runtime_format, movie.runtime)
+            movieRating.text = movie.rating.toString()
+            movieVotes.text = movie.votes.toString()
+            movieRevenue.text = getString(R.string.movie_revenue_format, movie.revenue)
+            movieDirector.text = movie.director
+        }
+        setupGenresRecyclerView()
+        setupActorsRecyclerView()
     }
 
-    private fun setMovieInfo(movie: Movie) {
-        findViewById<TextView>(R.id.movie_title).text = movie.title
-        findViewById<TextView>(R.id.movie_description).text = movie.description
-        findViewById<TextView>(R.id.movie_year).text = movie.year.toString()
-        findViewById<TextView>(R.id.movie_runtime).text = "${movie.runtime} min"
-        findViewById<TextView>(R.id.movie_rating).text = movie.rating.toString()
-        findViewById<TextView>(R.id.movie_votes).text = movie.votes.toString()
-        findViewById<TextView>(R.id.movie_revenue).text = "$${movie.revenue}M"
-        findViewById<TextView>(R.id.movie_director).text = movie.director
-    }
-
-    private fun setupGenresRecyclerView(movie: Movie) {
-        val genresRecyclerView = findViewById<RecyclerView>(R.id.genresRecyclerView)
-        genresRecyclerView.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        genresRecyclerView.adapter = GenreAdapter(
-            movie.genres.mapNotNull { movieListViewModel.getGenreById(it) }
-        ) {
-            // Handle genre click here
+    private fun setupGenresRecyclerView() {
+        val movieGenres = movieListViewModel.genreListLiveData.value
+            ?.filter { it.id in movieListViewModel.movieLiveData.value?.genres.orEmpty() }
+            ?: emptyList()
+        binding.genresRecyclerView.apply {
+            layoutManager = LinearLayoutManager(this@ViewMovieActivity, LinearLayoutManager.HORIZONTAL, false)
+            adapter = GenreAdapter(movieGenres) {
+                // Handle genre click here
+            }
         }
     }
 
-    private fun setupActorsRecyclerView(movie: Movie) {
-        val actorsRecyclerView = findViewById<RecyclerView>(R.id.actorsRecyclerView)
-        actorsRecyclerView.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        actorsRecyclerView.adapter = ActorAdapter(
-            movie.actors.mapNotNull { movieListViewModel.getActorById(it) }
-        ) {
-            // Handle actor click here
+    private fun setupActorsRecyclerView() {
+        val movieActors = movieListViewModel.actorListLiveData.value
+            ?.filter { it.id in movieListViewModel.movieLiveData.value?.actors.orEmpty() }
+            ?: emptyList()
+        binding.actorsRecyclerView.apply {
+            layoutManager = LinearLayoutManager(this@ViewMovieActivity, LinearLayoutManager.HORIZONTAL, false)
+            adapter = ActorAdapter(movieActors) {
+                // Handle actor click here
+            }
         }
     }
 }

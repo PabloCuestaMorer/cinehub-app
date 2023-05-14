@@ -5,4 +5,9 @@
     <string name="search">search</string>
     <string name="filter">filter</string>
     <string name="edit_movie">edit_movie</string>
+
+    // ViewMovieActivity
+    <string name="movie_runtime_format">%1$d min</string>
+    <string name="movie_revenue_format">$%1$.1fM</string>
+
 </resources>

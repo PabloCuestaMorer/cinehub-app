@@ -39,7 +39,6 @@ class MovieListViewModel(application: Application) : AndroidViewModel(applicatio
             } else {
                 // Handle error or show a message to the user
             }
-            loadGenresAndActors()
         }
         return dataLoaded
     }
