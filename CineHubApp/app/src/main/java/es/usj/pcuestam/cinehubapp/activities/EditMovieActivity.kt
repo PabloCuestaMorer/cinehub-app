@@ -57,7 +57,7 @@ class EditMovieActivity : AppCompatActivity() {
                     finish()
                 }
             }
-            movieListViewModel.loadGenresAndActors()
+            movieListViewModel.fetchGenresAndActors()
             movieListViewModel.genreListLiveData.observe(this) { genres ->
                 if (genres != null) {
                     movieListViewModel.movieLiveData.observe(this) { movie ->

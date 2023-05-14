@@ -44,6 +44,15 @@ class AppRepository {
         }
     }
 
+    suspend fun getActorById(actorId: Int): Actor? {
+        val response = apiService.getActorById(actorId)
+        return if (response.isSuccessful) {
+            response.body()
+        } else {
+            null
+        }
+    }
+
     suspend fun getAllGenres(): List<Genre>? {
         val response = apiService.getAllGenres()
         return if (response.isSuccessful) {
@@ -52,4 +61,6 @@ class AppRepository {
             null
         }
     }
+
+
 }

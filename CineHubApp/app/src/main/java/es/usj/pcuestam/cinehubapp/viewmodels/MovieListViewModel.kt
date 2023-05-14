@@ -26,6 +26,9 @@ class MovieListViewModel(application: Application) : AndroidViewModel(applicatio
     val genreListLiveData: LiveData<List<Genre>> = _genreListLiveData
     private val _actorListLiveData: MutableLiveData<List<Actor>> = MutableLiveData()
     val actorListLiveData: LiveData<List<Actor>> = _actorListLiveData
+    private val _actorLiveData = MutableLiveData<Actor>()
+    val actorLiveData: LiveData<Actor>
+        get() = _actorLiveData
 
     fun loadMovieList(): Boolean {
         var dataLoaded = false
@@ -43,7 +46,6 @@ class MovieListViewModel(application: Application) : AndroidViewModel(applicatio
         return dataLoaded
     }
 
-    // Fetch movie, genres, and actors:
     fun fetchMovieById(movieId: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             val movie = appRepository.getMovieById(movieId)
@@ -57,7 +59,7 @@ class MovieListViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
-    fun loadGenresAndActors() {
+    fun fetchGenresAndActors() {
         CoroutineScope(Dispatchers.IO).launch {
             val genres = appRepository.getAllGenres()
             val actors = appRepository.getAllActors()
@@ -73,17 +75,17 @@ class MovieListViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
-    private val _moviesWithActorLiveData: MutableLiveData<List<Movie>> = MutableLiveData()
-    val moviesWithActorLiveData: LiveData<List<Movie>> = _moviesWithActorLiveData
+    private val _moviesOfTheActorLiveData: MutableLiveData<List<Movie>> = MutableLiveData()
+    val moviesOfTheActorLiveData: LiveData<List<Movie>> = _moviesOfTheActorLiveData
 
-    fun fetchMoviesWithActor(actorId: Int) {
+    fun fetchMoviesOfTheActor(actorId: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             val allMovies = appRepository.getAllMovies()
-            val moviesWithActor = allMovies?.filter { movie -> movie.actors.contains(actorId) }
+            val moviesOfTheActor = allMovies?.filter { movie -> movie.actors.contains(actorId) }
 
-            if (moviesWithActor != null) {
+            if (moviesOfTheActor != null) {
                 withContext(Dispatchers.Main) {
-                    _moviesWithActorLiveData.value = moviesWithActor
+                    _moviesOfTheActorLiveData.value = moviesOfTheActor
                 }
             } else {
                 // Handle error or show a message to the user
@@ -91,6 +93,17 @@ class MovieListViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
-
+    fun fetchActorById(actorId: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val actor = appRepository.getActorById(actorId)
+            if (actor != null) {
+                withContext(Dispatchers.Main) {
+                    _actorLiveData.postValue(actor)
+                }
+            } else {
+                // Handle error or show a message to the user
+            }
+        }
+    }
 
 }

@@ -11,9 +11,10 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:scaleType="centerCrop"
+        android:src="@drawable/ic_contact_page"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@android:color/black" />
+        android:contentDescription="Actor porfile image" />
 
     <TextView
         android:id="@+id/actor_name"

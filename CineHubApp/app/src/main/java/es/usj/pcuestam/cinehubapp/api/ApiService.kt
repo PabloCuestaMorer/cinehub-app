@@ -22,6 +22,9 @@ interface ApiService {
     @GET("/actors")
     suspend fun getAllActors(): Response<List<Actor>>
 
+    @GET("/actors/{id}")
+    suspend fun getActorById(@Path("id") actorId: Int): Response<Actor>
+
     @GET("/genres")
     suspend fun getAllGenres(): Response<List<Genre>>
 }

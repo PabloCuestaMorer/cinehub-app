@@ -41,7 +41,7 @@ class ViewMovieActivity : AppCompatActivity() {
         movieListViewModel.movieLiveData.observe(this) { movie ->
             movie?.let {
                 displayMovieDetails(it)
-                movieListViewModel.loadGenresAndActors()
+                movieListViewModel.fetchGenresAndActors()
                 observeGenresAndActorsLiveData()
             }
         }

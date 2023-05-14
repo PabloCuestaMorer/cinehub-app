@@ -46,7 +46,7 @@ class AddMovieActivity : AppCompatActivity() {
 
     private fun initViewModel() {
         movieListViewModel = ViewModelProvider(this)[MovieListViewModel::class.java]
-        movieListViewModel.loadGenresAndActors()
+        movieListViewModel.fetchGenresAndActors()
     }
 
     private fun initViews() {
