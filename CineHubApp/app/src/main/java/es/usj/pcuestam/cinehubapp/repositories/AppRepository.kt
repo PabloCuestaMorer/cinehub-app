@@ -62,5 +62,13 @@ class AppRepository {
         }
     }
 
+    suspend fun getGenreById(genreId: Int): Genre? {
+        val response = apiService.getGenreById(genreId)
+        return if (response.isSuccessful) {
+            response.body()
+        } else {
+            null
+        }
+    }
 
 }

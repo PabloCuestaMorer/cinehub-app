@@ -24,6 +24,11 @@ class MovieListViewModel(application: Application) : AndroidViewModel(applicatio
 
     private val _genreListLiveData: MutableLiveData<List<Genre>> = MutableLiveData()
     val genreListLiveData: LiveData<List<Genre>> = _genreListLiveData
+    private val _genreLiveData = MutableLiveData<Genre>()
+    val genreLiveData: LiveData<Genre>
+        get() = _genreLiveData
+
+
     private val _actorListLiveData: MutableLiveData<List<Actor>> = MutableLiveData()
     val actorListLiveData: LiveData<List<Actor>> = _actorListLiveData
     private val _actorLiveData = MutableLiveData<Actor>()
@@ -99,6 +104,36 @@ class MovieListViewModel(application: Application) : AndroidViewModel(applicatio
             if (actor != null) {
                 withContext(Dispatchers.Main) {
                     _actorLiveData.postValue(actor)
+                }
+            } else {
+                // Handle error or show a message to the user
+            }
+        }
+    }
+
+    private val _moviesOfTheGenreLiveData: MutableLiveData<List<Movie>> = MutableLiveData()
+    val moviesOfTheGenreLiveData: MutableLiveData<List<Movie>> = _moviesOfTheGenreLiveData
+
+    fun fetchMoviesOfTheGenre(genreId: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val allMovies = appRepository.getAllMovies()
+            val moviesOfTheGenre = allMovies?.filter { movie -> movie.genres.contains(genreId) }
+            if (moviesOfTheGenre != null) {
+                withContext(Dispatchers.Main) {
+                    _moviesOfTheGenreLiveData.value = moviesOfTheGenre
+                }
+            } else {
+                // Handle error or show a message to the user
+            }
+        }
+    }
+
+    fun fetchGenreById(genreId: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val genre = appRepository.getGenreById(genreId)
+            if (genre != null) {
+                withContext(Dispatchers.Main) {
+                    _genreLiveData.postValue(genre)
                 }
             } else {
                 // Handle error or show a message to the user

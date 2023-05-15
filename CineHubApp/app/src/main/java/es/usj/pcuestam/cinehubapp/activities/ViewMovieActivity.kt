@@ -82,8 +82,10 @@ class ViewMovieActivity : AppCompatActivity() {
         binding.genresRecyclerView.apply {
             layoutManager =
                 LinearLayoutManager(this@ViewMovieActivity, LinearLayoutManager.HORIZONTAL, false)
-            adapter = GenreAdapter(movieGenres) {
-                // Handle genre click here
+            adapter = GenreAdapter(movieGenres) { genre ->
+                val intent = Intent(this@ViewMovieActivity, GenreActivity::class.java)
+                intent.putExtra("GENRE_ID", genre.id)
+                startActivity(intent)
             }
         }
     }
@@ -96,7 +98,6 @@ class ViewMovieActivity : AppCompatActivity() {
             layoutManager =
                 LinearLayoutManager(this@ViewMovieActivity, LinearLayoutManager.HORIZONTAL, false)
             adapter = ActorAdapter(movieActors) { actor ->
-                // Start ActorActivity when an actor is clicked
                 val intent = Intent(this@ViewMovieActivity, ActorActivity::class.java)
                 intent.putExtra("ACTOR_ID", actor.id)
                 startActivity(intent)

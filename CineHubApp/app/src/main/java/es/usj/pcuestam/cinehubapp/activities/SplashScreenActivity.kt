@@ -27,7 +27,7 @@ class SplashScreenActivity : AppCompatActivity() {
     private fun loadDataAndNavigate() {
         CoroutineScope(Dispatchers.Main).launch {
             movieListViewModel.loadMovieList()
-            delay(8000)
+            delay(2000)
             navigateToMovieListActivity()
         }
     }

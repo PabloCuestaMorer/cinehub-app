@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
+            android:name=".activities.GenreActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.ActorActivity"
             android:exported="false" />
         <activity
