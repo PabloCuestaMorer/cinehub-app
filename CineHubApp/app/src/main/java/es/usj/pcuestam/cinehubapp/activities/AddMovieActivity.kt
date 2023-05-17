@@ -19,10 +19,12 @@ import kotlinx.coroutines.launch
 import androidx.core.view.children
 import es.usj.pcuestam.cinehubapp.adapters.ActorArrayAdapter
 import es.usj.pcuestam.cinehubapp.adapters.GenreArrayAdapter
+import es.usj.pcuestam.cinehubapp.databinding.ActivityAddMovieBinding
 import es.usj.pcuestam.cinehubapp.repositories.AppRepository
 
 class AddMovieActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityAddMovieBinding
     private lateinit var movieListViewModel: MovieListViewModel
     private lateinit var addActorButton: Button
     private lateinit var removeActorButton: Button
@@ -36,7 +38,8 @@ class AddMovieActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_movie)
+        binding = ActivityAddMovieBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         initViewModel()
         initViews()
@@ -50,12 +53,12 @@ class AddMovieActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        addActorButton = findViewById(R.id.add_actor_button)
-        removeActorButton = findViewById(R.id.remove_actor_button)
-        addGenreButton = findViewById(R.id.add_genre_button)
-        removeGenreButton = findViewById(R.id.remove_genre_button)
-        genreSpinnersContainer = findViewById(R.id.genre_spinners_container)
-        actorSpinnersContainer = findViewById(R.id.actor_spinners_container)
+        addActorButton = binding.addActorButton
+        removeActorButton = binding.removeActorButton
+        addGenreButton = binding.addGenreButton
+        removeGenreButton = binding.removeGenreButton
+        genreSpinnersContainer = binding.genreSpinnersContainer
+        actorSpinnersContainer = binding.actorSpinnersContainer
     }
 
     private fun observeData() {
@@ -81,26 +84,25 @@ class AddMovieActivity : AppCompatActivity() {
     }
 
     private fun setupButtonClickListeners() {
-        addActorButton.setOnClickListener {
+        binding.addActorButton.setOnClickListener {
             val spinner = createSpinner()
             spinner.adapter = actorSpinnerAdapter
-            actorSpinnersContainer.addView(spinner)
+            binding.actorSpinnersContainer.addView(spinner)
         }
-        removeActorButton.setOnClickListener {
-            removeLastSpinner(actorSpinnersContainer)
+        binding.removeActorButton.setOnClickListener {
+            removeLastSpinner(binding.actorSpinnersContainer)
         }
 
-        addGenreButton.setOnClickListener {
+        binding.addGenreButton.setOnClickListener {
             val spinner = createSpinner()
             spinner.adapter = genreSpinnerAdapter
-            genreSpinnersContainer.addView(spinner)
+            binding.genreSpinnersContainer.addView(spinner)
         }
-        removeGenreButton.setOnClickListener {
-            removeLastSpinner(genreSpinnersContainer)
+        binding.removeGenreButton.setOnClickListener {
+            removeLastSpinner(binding.genreSpinnersContainer)
         }
 
-        val saveButton = findViewById<Button>(R.id.save_button)
-        saveButton.setOnClickListener {
+        binding.saveButton.setOnClickListener {
             val newMovie = createNewMovieFromInputs()
             addNewMovie(newMovie)
         }

@@ -82,7 +82,6 @@
             android:minHeight="48dp"
             tools:text="Director Name" />
 
-        <!-- ... -->
         <TextView
             android:id="@+id/tvGenres"
             android:layout_width="match_parent"
