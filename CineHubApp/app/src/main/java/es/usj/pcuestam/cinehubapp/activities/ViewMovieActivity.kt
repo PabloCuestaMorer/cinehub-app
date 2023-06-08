@@ -64,7 +64,7 @@ class ViewMovieActivity : AppCompatActivity() {
         with(binding) {
             movieTitle.text = movie.title
             movieDescription.text = movie.description
-            movieYear.text = movie.year.toString()
+            movieYear.text = movie.year
             movieRuntime.text = getString(R.string.movie_runtime_format, movie.runtime)
             movieRating.text = movie.rating.toString()
             movieVotes.text = movie.votes.toString()

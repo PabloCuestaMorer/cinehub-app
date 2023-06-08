@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/gray_black"
     android:padding="16dp"
     tools:context=".activities.ContactActivity">
 
@@ -12,7 +13,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
-        android:text="Email: fake.email@example.com"
+        android:fontFamily="sans-serif-light"
+        android:text="@string/email_fake_email_example_com"
+        android:textColor="@color/light_blue"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/websiteTextView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,19 +25,22 @@
         android:id="@+id/websiteTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Website: www.example.com"
+        android:fontFamily="sans-serif-light"
+        android:text="@string/website_www_example_com"
+        android:textColor="@color/light_blue"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/phoneTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/phoneTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:text="Phone: +1 (555) 123-4567"
+        android:fontFamily="sans-serif-light"
+        android:text="@string/phone_1_555_123_4567"
+        android:textColor="@color/light_blue"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

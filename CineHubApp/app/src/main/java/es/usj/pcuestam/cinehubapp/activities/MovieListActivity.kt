@@ -47,6 +47,14 @@ class MovieListActivity : AppCompatActivity() {
         setupToolbar()
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Reload the movie list when resuming
+        lifecycleScope.launch {
+            movieListViewModel.loadMovieList()
+        }
+    }
+
     private fun initViewModelObservers() {
         // Observe changes to the movie list data and update the adapter accordingly
         movieListViewModel.movieListLiveData.observe(this) { movieList ->
@@ -68,18 +76,15 @@ class MovieListActivity : AppCompatActivity() {
 
 
     private fun setupMovieListAdapter(movieList: List<Movie>) {
-        movieListAdapter = MovieListAdapter(movieList,
-            { movie -> // Handle movie click
-                val intent = Intent(this, ViewMovieActivity::class.java)
-                intent.putExtra("MOVIE_ID", movie.id)
-                startActivity(intent)
-            },
-            { movie -> // Handle edit button click
-                val intent = Intent(this, EditMovieActivity::class.java)
-                intent.putExtra("MOVIE_ID", movie.id)
-                startActivity(intent)
-            }
-        )
+        movieListAdapter = MovieListAdapter(movieList, { movie -> // Handle movie click
+            val intent = Intent(this, ViewMovieActivity::class.java)
+            intent.putExtra("MOVIE_ID", movie.id)
+            startActivity(intent)
+        }, { movie -> // Handle edit button click
+            val intent = Intent(this, EditMovieActivity::class.java)
+            intent.putExtra("MOVIE_ID", movie.id)
+            startActivity(intent)
+        })
     }
 
     private fun setupAddMovieFab() {
@@ -129,16 +134,12 @@ class MovieListActivity : AppCompatActivity() {
         val yearEditText = dialogView.findViewById<EditText>(R.id.yearEditText)
         val ratingEditText = dialogView.findViewById<EditText>(R.id.ratingEditText)
 
-        AlertDialog.Builder(this)
-            .setTitle("Filter Options")
-            .setView(dialogView)
+        AlertDialog.Builder(this).setTitle("Filter Options").setView(dialogView)
             .setPositiveButton("Apply") { _, _ ->
                 val year = yearEditText.text.toString().toIntOrNull()
                 val rating = ratingEditText.text.toString().toFloatOrNull()
                 movieListAdapter.applyFilters(year, rating)
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
+            }.setNegativeButton("Cancel", null).show()
     }
 
 }

@@ -1,15 +1,17 @@
 package es.usj.pcuestam.cinehubapp.beans
 
-data class Movie(
-    val id: Int,
-    val title: String,
-    val description: String,
-    val year: Int,
-    val runtime: Int,
-    val rating: Double,
-    val votes: Int,
-    val revenue: Double,
-    val director: String,
-    val genres: List<Int>,
-    val actors: List<Int>
-)
+import java.io.Serializable
+
+class Movie(
+    var id: Int,
+    var title: String,
+    var description: String,
+    var director: String,
+    var rating: Double,
+    var revenue: Double,
+    var runtime: Int,
+    var votes: Int,
+    var year: String,
+    var genres: List<Int> = mutableListOf(),
+    var actors: List<Int> = mutableListOf()
+) : Serializable

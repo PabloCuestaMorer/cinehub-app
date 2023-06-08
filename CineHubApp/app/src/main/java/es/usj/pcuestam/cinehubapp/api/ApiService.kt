@@ -7,6 +7,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface ApiService {
@@ -18,6 +19,9 @@ interface ApiService {
 
     @POST("/movies")
     suspend fun addMovie(@Body movie: Movie): Response<Movie>
+
+    @PUT("/movies")
+    suspend fun updateMovie(@Body movie: Movie): Response<String>
 
     @GET("/actors")
     suspend fun getAllActors(): Response<List<Actor>>

@@ -111,8 +111,7 @@ class AddMovieActivity : AppCompatActivity() {
     private fun createSpinner(): Spinner {
         return Spinner(this).apply {
             layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
             )
         }
     }
@@ -128,9 +127,7 @@ class AddMovieActivity : AppCompatActivity() {
             val addedMovie = appRepository.addMovie(newMovie)
             if (addedMovie != null) {
                 Toast.makeText(
-                    this@AddMovieActivity,
-                    "Movie added successfully",
-                    Toast.LENGTH_SHORT
+                    this@AddMovieActivity, "Movie added successfully", Toast.LENGTH_SHORT
                 ).show()
                 finish()
             } else {
@@ -143,30 +140,18 @@ class AddMovieActivity : AppCompatActivity() {
     private fun createNewMovieFromInputs(): Movie {
         val title = findViewById<EditText>(R.id.title_et).text.toString()
         val description = findViewById<EditText>(R.id.description_et).text.toString()
-        val year =
-            findViewById<EditText>(R.id.release_year_et).text.toString().toIntOrNull() ?: 0
+        val year = findViewById<EditText>(R.id.release_year_et).text.toString()
         val runtime = findViewById<EditText>(R.id.runtime_et).text.toString().toIntOrNull() ?: 0
-        val rating =
-            findViewById<EditText>(R.id.rating_et).text.toString().toDoubleOrNull() ?: 0f
+        val rating = findViewById<EditText>(R.id.rating_et).text.toString().toDoubleOrNull() ?: 0.0
         val votes = findViewById<EditText>(R.id.votes_et).text.toString().toIntOrNull() ?: 0
         val revenue =
-            findViewById<EditText>(R.id.revenue_et).text.toString().toDoubleOrNull() ?: 0f
+            findViewById<EditText>(R.id.revenue_et).text.toString().toDoubleOrNull() ?: 0.0
         val director = findViewById<EditText>(R.id.movie_director_edit_text).text.toString()
         val actors = getSelectedActorIds()
         val genres = getSelectedGenreIds()
 
         return Movie(
-            0,
-            title,
-            description,
-            year,
-            runtime,
-            rating as Double,
-            votes,
-            revenue as Double,
-            director,
-            actors,
-            genres
+            0, title, description, director, rating, revenue, runtime, votes, year, genres, actors
         )
     }
 

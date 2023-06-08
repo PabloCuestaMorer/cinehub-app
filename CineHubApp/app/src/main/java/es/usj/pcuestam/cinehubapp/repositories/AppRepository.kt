@@ -34,6 +34,11 @@ class AppRepository {
         }
     }
 
+    suspend fun updateMovie(movie: Movie): Boolean {
+        val response = apiService.updateMovie(movie)
+        return response.isSuccessful
+    }
+
 
     suspend fun getAllActors(): List<Actor>? {
         val response = apiService.getAllActors()

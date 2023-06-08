@@ -38,7 +38,6 @@ class ActorActivity : AppCompatActivity() {
                 }
             }
 
-
             // Fetch movies that the actor has participated in and display them
             movieListViewModel.fetchMoviesOfTheActor(actorId)
             movieListViewModel.moviesOfTheActorLiveData.observe(this) { movies ->

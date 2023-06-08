@@ -39,7 +39,7 @@ class MovieListAdapter(
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val filterString = constraint.toString().lowercase().trim()
-                movieListFiltered = if (filterString.isEmpty()) {
+                val filteredList = if (filterString.isEmpty()) {
                     movieList
                 } else {
                     movieList.filter { movie ->
@@ -47,21 +47,24 @@ class MovieListAdapter(
                     }
                 }
                 val filterResults = FilterResults()
-                filterResults.values = movieListFiltered
+                filterResults.values = filteredList
                 return filterResults
             }
 
             @Suppress("UNCHECKED_CAST")
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                movieListFiltered = results?.values as List<Movie>
-                notifyDataSetChanged()
+                synchronized(this) {
+                    movieListFiltered = results?.values as List<Movie>
+                    notifyDataSetChanged()
+                }
             }
         }
     }
 
+
     fun applyFilters(year: Int?, rating: Float?) {
         val filteredList = movieList.filter { movie ->
-            val yearMatch = year == null || movie.year == year
+            val yearMatch = year == null || movie.year.toIntOrNull() == year
             val ratingMatch = rating == null || movie.rating >= rating
             yearMatch && ratingMatch
         }

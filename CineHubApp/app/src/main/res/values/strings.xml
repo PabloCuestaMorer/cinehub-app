@@ -9,5 +9,11 @@
     // ViewMovieActivity
     <string name="movie_runtime_format">%1$d min</string>
     <string name="movie_revenue_format">$%1$.1fM</string>
+    <string name="email_fake_email_example_com">Email: fake.email@example.com</string>
+    <string name="website_www_example_com">Website: www.example.com</string>
+    <string name="phone_1_555_123_4567">Phone: +1 (555) 123-4567</string>
+    <string name="button_to_add_movie">button to add movie</string>
+    <string name="year">Year</string>
+    <string name="rating">Rating</string>
 
 </resources>
