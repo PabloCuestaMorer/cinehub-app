@@ -17,7 +17,7 @@ class SplashScreenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
 
-        movieListViewModel = ViewModelProvider(this).get(MovieListViewModel::class.java)
+        movieListViewModel = ViewModelProvider(this)[MovieListViewModel::class.java]
 
         loadDataAndNavigate()
     }
